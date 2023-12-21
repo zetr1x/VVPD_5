@@ -6,12 +6,22 @@ def generate_matrix(height: int, width: int) -> list:
     """
     Функция генерирует матрицу по заданным параметрам
 
+    Функция принимает на вход 2 аргумента высоту и ширину и создает
+    по указанным параметрам матрицу высота x ширина
+
+
     Args:
         height: высота матрицы
         width: ширина матрицы
 
     Returns:
-        Матрица(height, width)
+        Матрица вида height x width
+
+    Examples:
+        >>> generate_matrix(2, 2)
+        [[23, 11], [76, 213]]
+        >>> generate_matrix(3, 3)
+        [[7, 34, 240], [12, 156, 5], [78, 3, 9]]
     """
     return [[randint(0, 255) for _ in range(width)] for _ in range(height)]
 
@@ -20,11 +30,20 @@ def integral_view(image: list) -> list:
     """
     Функция расчитывает матрицу интегрального представления изображения
 
+    Функция принимает на вход матрицу пикселей исходного изображения и
+    рассчитывает матрицу интегрального представления изображения
+
     Args:
         image: матрица пикселей изображения
 
     Returns:
         integral_image: интегральное представление изображения
+
+    Examples:
+        >>> intergral_view([[218, 99], [108, 2]])
+        [[218, 317], [326, 427]]
+        >>> integral([[238, 115, 59], [28, 248, 166], [172, 246, 213]])
+        [[238, 353, 412], [266, 629, 854], [438, 1047, 1485]]
     """
     height = len(image)
     width = len(image[0])
@@ -41,7 +60,11 @@ def integral_view(image: list) -> list:
 
 def rect_sum(integral_image: list, x1: int, y1: int, x2: int, y2: int) -> int:
     """
-    Функция находит сумму пикселей произвольного прямоугольника
+    Функция находит сумму пикселей прямоугольника матрицы изображения
+
+    Функция принмает на вход матрицу интегрального представления матрицы
+    и координаты левого верхнего и правого нижнего углов произвольного
+    прямоугольника и считает сумму пикселей внутри этого треугольника
 
     Args:
         integral_image: интегральное представление матрицы
@@ -52,11 +75,17 @@ def rect_sum(integral_image: list, x1: int, y1: int, x2: int, y2: int) -> int:
 
     Returns:
         Сумма пикселей произвольного прямоугольника
+
+    Examples:
+        >>> rect_sum([[180, 289, 470], [187, 365, 769], [264, 684, 1264], 0, 0, 1, 1])
+        "Сумма пикселей в прямоугольнике: 365"
+        >>> rect_sum([[137, 261], [277, 502]], 0, 1, 1, 1)
+        "Сумма пикселей в прямоугольнике: 241"
     """
-    rect_a = image[y1 - 1][x1 - 1] if y1 > 0 and x1 > 0 else 0
-    rect_b = image[y1 - 1][x2] if y1 > 0 else 0
-    rect_c = image[y2][x2]
-    rect_d = image[y2][x1 - 1] if x1 > 0 else 0
+    rect_a = integral_image[y1 - 1][x1 - 1] if y1 > 0 and x1 > 0 else 0
+    rect_b = integral_image[y1 - 1][x2] if y1 > 0 else 0
+    rect_c = integral_image[y2][x2]
+    rect_d = integral_image[y2][x1 - 1] if x1 > 0 else 0
     return rect_a + rect_c - rect_b - rect_d
 
 
